@@ -19,13 +19,16 @@ class Phone(Field):
         super().__init__(value)
 
     def validate(self):
-        pass
+        # Додамо логіку перевірки коректності номера телефону тут
+        if not isinstance(self.value, str) or len(self.value) < 5:
+            raise ValueError("Phone number must be a string of at least 5 characters")
 
 class Birthday(Field):
     def __init__(self, value=None):
         super().__init__(value)
 
     def validate(self):
+        # Додамо логіку перевірки коректності дня народження тут
         pass
 
 class Record:
@@ -35,6 +38,7 @@ class Record:
         self.birthday = Birthday(birthday)
 
     def days_to_birthday(self):
+        # Додамо код для розрахунку кількості днів до наступного дня народження тут
         pass
 
     @property
