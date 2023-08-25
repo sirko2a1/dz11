@@ -1,3 +1,4 @@
+from datetime import date, datetime
 class Field:
     def __init__(self, value=None):
         self._value = value
@@ -28,18 +29,27 @@ class Birthday(Field):
         super().__init__(value)
 
     def validate(self):
-        # Додамо логіку перевірки коректності дня народження тут
         pass
 
-class Record:
-    def __init__(self, name, phone, birthday=None):
-        self.name = name
-        self.phone = Phone(phone)
-        self.birthday = Birthday(birthday)
+class Birthday(Field):
+    def __init__(self, value=None):
+        super().__init__(value)
+
+    def validate(self):
+        if self.value:
+            try:
+                datetime.strptime(self.value, '%Y-%m-%d')
+            except ValueError:
+                raise ValueError("Некоректний формат дня народження. Використовуйте формат 'YYYY-MM-DD'.")
 
     def days_to_birthday(self):
-        # Додамо код для розрахунку кількості днів до наступного дня народження тут
-        pass
+        if self.value:
+            today = date.today()
+            dob = datetime.strptime(self.value, '%Y-%m-%d').date().replace(year=today.year)
+            if dob < today:
+                dob = dob.replace(year=today.year + 1)
+            days_until_birthday = (dob - today).days
+            return days_until_birthday
 
     @property
     def phone(self):
